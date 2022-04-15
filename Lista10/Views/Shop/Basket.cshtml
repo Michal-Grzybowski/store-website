@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Lista10.Models.Article>
+
+@{
+    ViewData["Title"] = "Basket";
+}
+
+<h1>Basket</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Picture)
+            </th>
+            <th>
+                Amount
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            @if (ViewData[item.ArticleId.ToString()] != null)
+            {
+                ViewData["flag"] = true;
+
+
+                ViewData["price"] = int.Parse(ViewData["price"].ToString()) + item.Price * int.Parse(ViewData[item.ArticleId.ToString()].ToString());
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ArticleName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                    </td>
+                    <td>
+                        @if (item.Picture != null)
+                        {
+                            <img src=@("~/upload/" + item.Picture) asp-append-version="true" width="50px" height="50px" />
+                        }
+                        else
+                        {
+                            <img src="~/image/NoImage.jpg" asp-append-version="true" width="50px" height="50px" />
+                        }
+                    </td>
+                    <td>
+                        @ViewData[item.ArticleId.ToString()]
+
+                    </td>
+                    <td>
+                        <button type="button" name="buttonAdd" onclick="location.href='@Url.Action("Increase", "Shop", new { id = item.ArticleId })'"> + </button>
+                        <button type="button" name="buttonDecrease" onclick="location.href='@Url.Action("Decrease", "Shop", new { id = item.ArticleId })'"> - </button>
+                        <button type="button" name="buttonDelete" onclick="location.href='@Url.Action("Delete", "Shop", new { id = item.ArticleId })'"> delete </button>
+                    </td>
+
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>
+<p>Calkowity koszt koszyka to: @ViewData["price"]</p>
+@if (ViewData["flag"].Equals(false))
+{
+    <br>
+    <h4>Uwaga, twój koszyk jest pusty</h4>
+}
+<br />
+@if (User.IsInRole("Customer") && !ViewData["flag"].Equals(false))
+{
+    <button type="button" name="buttonOrder" onclick="location.href='@Url.Action("Order", "Shop")'"> Summarize the order  </button>
+}
+

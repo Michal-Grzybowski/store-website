@@ -1,0 +1,87 @@
+﻿@model IEnumerable<Lista10.Models.Article>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+@using (Html.BeginForm("Index", "Shop", FormMethod.Post))
+{
+    @Html.DropDownList("CategoryId", "Select Categories")
+    <input type="submit" name="submitButt" value="Submit" />
+}
+
+@if (!User.IsInRole("Admin"))
+{
+    @using (Html.BeginForm("Basket", "Shop", FormMethod.Post))
+    {
+        <button id="MyBasketButt" type="submit" name="BasketButt"><img src="~/image/Basket.jpg" width="50px" height="50px" /></button>
+    }
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ArticleName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Picture)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArticleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                </td>
+                <td>
+                    @if (item.Picture != null)
+                    {
+                        <img src=@("~/upload/"+item.Picture) asp-append-version="true" width="50px" height="50px" />
+                    }
+                    else
+                    {
+                        <img src="~/image/NoImage.jpg" asp-append-version="true" width="50px" height="50px" />
+                    }
+                </td>
+                @if (!User.IsInRole("Admin"))
+                {
+                    <td>
+                        @using (Html.BeginForm("Index", "Shop", FormMethod.Post))
+                        {
+                            <input type="submit" name="AddToBasket" value="Dodaj do koszyka" asp-route-id="@item.ArticleId" />
+
+                        }
+                    </td>
+                }
+            </tr>
+
+
+
+        }
+    </tbody>
+</table>
+<button id="loadingButt" onclick="jsLoadMore()" type="button" name="buttonOrder"> Load more </button>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+    </script>
+}

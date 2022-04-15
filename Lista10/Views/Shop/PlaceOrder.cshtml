@@ -1,0 +1,66 @@
+﻿@model Lista10.Models.Order
+@using Lista10.Enums
+
+@{
+    ViewData["Title"] = "Order";
+}
+<h1>Your order data</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("Name")
+            </th>
+            <th>
+                @Html.DisplayName("Surname")
+            </th>
+            <th>
+                @Html.DisplayName("Email")
+            </th>
+            <th>
+                @Html.DisplayName("Address")
+            </th>
+            <th>
+                @Html.DisplayName("City")
+            </th>
+            <th>
+                @Html.DisplayName("PostalCode")
+            </th>
+            <th>
+                @Html.DisplayName("Payment")
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @*        @if (ViewData[Model.OrderId.ToString()] != null)
+            {*@
+
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Surname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.PostalCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => Model.PaymentEnum)
+            </td>
+        </tr>
+        @*        }*@
+    </tbody>
+
+</table>
+<button id="navigateBackToShopButton" class="btn btn-primary" name="buttonOrder" onclick="location.href='@Url.Action("Index", "Shop")'"> Back to shop  </button>
